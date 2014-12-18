@@ -1,9 +1,50 @@
 @import "normalize";
 
-.sudoku {
-	width: 500px;
+.wrapper {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	position: relative;
 
-	td {
+	&:after {
+		padding-top: 100%;
+		content: '';
+		display: block;
+	}
+
+	.sudoku-wrap {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+	}
+
+}
+
+.sudoku {
+	width: 100%;
+	height: 100%;
+
+	tr:nth-child(3) .cell,
+	tr:nth-child(6) .cell {
+		border-bottom: 2px solid blue;
+	}
+
+	.cell {
 		border: 1px solid red;
+		box-sizing: border-box;
+		width: (1/9) * 100%;
+		height: (1/9) * 100%;
+
+		&:nth-child(3),
+		&:nth-child(6) {
+			border-right: 2px solid blue;
+		}
+
+		input {
+			width: 100%;
+			border: none;
+		}
 	}
 }
