@@ -6,16 +6,17 @@ head
 body
 	.wrapper
 		.sudoku-wrap
-			table.sudoku
-				- var i = 0
-				while i < 9
-					tr
-						- var j = 0
-						while j < 9
-							td.cell(data-cell-row=i, data-cell-column=j)
-								input(type="number", placeholder="9")
-							- j++
-					- i++
+			.board-wrap
+				table.sudoku
+					- var i = 0
+					while i < 9
+						tr
+							- var j = 0
+							while j < 9
+								td.cell(data-cell-row=i, data-cell-column=j)
+									input(type="number", value="9", disabled=true)
+								- j++
+						- i++
 
 	script(src="js/jquery-2.1.1.min.js")
 	script(src="js/board.js")

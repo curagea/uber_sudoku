@@ -1,23 +1,30 @@
 @import "normalize";
 
-.wrapper {
-	width: 100%;
-	max-width: 600px;
-	margin: 0 auto;
-	position: relative;
+$cell-border-color: hsl(0, 0, 80%);
 
-	&:after {
-		padding-top: 100%;
-		content: '';
-		display: block;
+.wrapper {
+	.sudoku-wrap {
+		width: 80%;
+		max-width: 600px;
+		margin: 0 auto;
+		position: relative;
+
+		&:after {
+			padding-top: 100%;
+			content: '';
+			display: block;
+		}
+
 	}
 
-	.sudoku-wrap {
+	.board-wrap {
 		position: absolute;
 		left: 0;
 		right: 0;
 		top: 0;
 		bottom: 0;
+		border: 3px solid $cell-border-color;
+		border-radius: 5px;
 	}
 
 }
@@ -28,23 +35,35 @@
 
 	tr:nth-child(3) .cell,
 	tr:nth-child(6) .cell {
-		border-bottom: 2px solid blue;
+		border-bottom: 3px solid $cell-border-color;
+	}
+
+	tr:nth-child(9) .cell {
+		border-bottom: none;
 	}
 
 	.cell {
-		border: 1px solid red;
+		border-right: 2px dotted $cell-border-color;
+		border-bottom: 2px dotted $cell-border-color;
 		box-sizing: border-box;
 		width: (1/9) * 100%;
 		height: (1/9) * 100%;
 
 		&:nth-child(3),
 		&:nth-child(6) {
-			border-right: 2px solid blue;
+			border-right: 3px solid $cell-border-color;
+		}
+
+		&:nth-child(9) {
+			border-right: none;
 		}
 
 		input {
 			width: 100%;
+			height: 100%;
 			border: none;
+			text-align: center;
+			font-size: 2.5em;
 		}
 	}
 }
