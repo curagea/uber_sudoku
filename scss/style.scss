@@ -1,0 +1,9 @@
+@import "normalize";
+
+.sudoku {
+	width: 500px;
+
+	td {
+		border: 1px solid red;
+	}
+}

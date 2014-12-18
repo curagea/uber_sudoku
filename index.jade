@@ -1,0 +1,20 @@
+html(lang="en")
+head
+	meta(charset="UTF-8")
+	title Uber Sudoku
+	link(rel="stylesheet", href="css/style.css")
+body
+	.wrapper
+		table.sudoku
+			- var i = 0
+			while i < 9
+				tr
+					- var j = 0
+					while j < 9
+						td.cell(data-cell-row=i, data-cell-column=j)
+							input(type="number")
+						- j++
+				- i++
+
+	script(src="js/jquery-2.1.1.min.js")
+	script(src="js/board.js")
