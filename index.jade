@@ -4,19 +4,25 @@ head
 	title Uber Sudoku
 	link(rel="stylesheet", href="css/style.css")
 body
+	//- TODO: isFilled is just for mocking up the filled/unfilled squares.
+	//- Remove for "production"
+	- var isFilled = true
 	.wrapper
-		.sudoku-wrap
-			.board-wrap
-				table.sudoku
-					- var i = 0
-					while i < 9
-						tr
-							- var j = 0
-							while j < 9
-								td.cell(data-cell-row=i, data-cell-column=j)
-									input(type="number", value="9", disabled=true)
-								- j++
-						- i++
+		.outer-wrap
+			h1 Uber Sudoku!
+			.sudoku-wrap
+				.board-wrap
+					table.sudoku
+						- var i = 0
+						while i < 9
+							tr
+								- var j = 0
+								while j < 9
+									td.cell(data-cell-row=i, data-cell-column=j)
+										input(type="number", value=isFilled ? '9' : '', min="0", max="9", disabled=isFilled)
+										- isFilled = !isFilled
+									- j++
+							- i++
 
 	script(src="js/jquery-2.1.1.min.js")
 	script(src="js/board.js")

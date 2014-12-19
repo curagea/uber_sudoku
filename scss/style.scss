@@ -1,12 +1,33 @@
 @import "normalize";
 
 $cell-border-color: hsl(0, 0, 80%);
+$prefilled-digit-color: hsl(0, 0, 50%);
+
+
+body {
+	color: hsl(0, 0, 20%);
+	background-color: hsl(35, 100%, 99%);
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 .wrapper {
-	.sudoku-wrap {
+	padding: 20px 0;
+
+	.outer-wrap {
 		width: 80%;
 		max-width: 600px;
 		margin: 0 auto;
+		text-align: center;
+	}
+
+	.sudoku-wrap {
+		width: 100%;
 		position: relative;
 
 		&:after {
@@ -18,6 +39,7 @@ $cell-border-color: hsl(0, 0, 80%);
 	}
 
 	.board-wrap {
+		background-color: hsl(0, 0, 100%);
 		position: absolute;
 		left: 0;
 		right: 0;
@@ -64,6 +86,14 @@ $cell-border-color: hsl(0, 0, 80%);
 			border: none;
 			text-align: center;
 			font-size: 2.5em;
+
+			&:disabled {
+				color: $prefilled-digit-color;
+			}
+
+			&.invalid {
+				color: hsl(0, 100%, 50%);
+			}
 		}
 	}
 }
