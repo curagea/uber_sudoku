@@ -1,89 +1,107 @@
-function Cell() {
+var BOARD = [0,8,2,4,0,5,7,0,3,0,1,0,6,8,3,5,0,0,5,3,9,7,0,0,6,4,8,0,7,4,3,5,6,0,8,9,8,0,0,9,0,7,0,0,6,9,6,3,0,0,8,4,7,0,7,4,5,0,0,0,2,3,1,0,0,8,5,3,4,0,6,0,3,0,6,2,0,1,8,5,0]
+var SOLUTION = [6,8,2,4,9,5,7,1,3,4,1,7,6,8,3,5,9,2,5,3,9,7,1,2,6,4,8,2,7,4,3,5,6,1,8,9,8,5,1,9,4,7,3,2,6,9,6,3,1,2,8,4,7,5,7,4,5,8,6,9,2,3,1,1,2,8,5,3,4,9,6,7,3,9,6,2,7,1,8,5,4]
+
+
+function Cell(row, col, digit, input) {
 	var cell = this;
 
 	this.row = row;
-	this.column = column;
-	this.block = block;
-	this.digit = digit || null;
+	this.col = col;
+	this.block = [blockCoordinate(row), blockCoordinate(col)];
+	this.digit = digit;
+	this.input = input;
 
-	this.checkDigit = function(digit) {
-		var unionArray = union_arrays(cell.row, cell.column);
-		unionArray = union_arrays(unionArray, cell.block);
-		if ($.inArray(cell.digit, unionArray)) {
-			yell();
-		} else {
-			cell.row.addDigit(digit);
-			cell.column.addDigit(digit);
-			cell.Block.addDigit(digit);
+	this.input.value = (digit !== 0) ? digit : '';
+	this.input.disabled = (digit !== 0);
+};
+
+function Board(boardContainer) {
+	var board = this;
+
+	this.rows = [];
+	this.cols = [];
+	this.blocks = [];
+	this.cells = [];
+	this.boardContainer = boardContainer;
+	this.inputs = boardContainer.find('input');
+	this.filledCellCount = 0;
+
+	this.makeStorageGrid = function(emptyArray) {
+		for (var i = 0; i < 9; i++) {
+			emptyArray[i] = [];
 		}
 	};
 
-};
-
-
-function Group() {
-	var group = this;
-
-	this.digits = new Array();
-
-	this.addDigit = function(digit) {
-		group.digits.push(digit);
+	this.makeBlocksGrid = function(emptyArray) {
+		for (var i = 0; i < 3; i++) {
+			emptyArray[i] = [];
+			for (var j = 0; j < 3; j++) {
+				emptyArray[i][j] = [];
+			}
+		}
 	};
 
-	this.removeDigit = function(digit) {
-		group.digits = removeFromArray(group.digits, digit);
+	this.initBoard = function(boardData) {
+		board.makeStorageGrid(this.rows);
+		board.makeStorageGrid(this.cols);
+		board.makeBlocksGrid(this.blocks);
+		board.makeStorageGrid(this.cells);
+
+		for (var row = 0; row < 9; row++) {
+			for (var col = 0; col < 9; col++) {
+				var digit = boardData[9 * row + col];
+				board.cells[row][col] = new Cell(row, col, digit, board.inputs[9*row + col]);
+				board.rows[row][col] = digit;
+				board.cols[col][row] = digit;
+				board.blocks[blockCoordinate(row)][blockCoordinate(col)][blockCellLocation(row, col)] = digit;
+				if (digit !== 0) {
+					board.upFillCount();
+				}
+			}
+		}
+
+		board.inputs.on('change', function() {
+			board.checkInput($(this));
+		});
+	}
+
+	this.upFillCount = function() {
+		board.filledCellCount = board.filledCellCount++;
+	}
+
+	this.downFillCount = function() {
+		board.filledCellCount = board.filledCellCount--;
+	}
+
+	this.insertDigit = function(row, col, digit) {
+		board.rows[row][col] = digit;
+		board.cols[col][row] = digit;
+		blocks[blockCoordinate(row)][blockCoordinate(col)][blockCellLocation(row, col)] = digit;
+	}
+
+	this.removeDigit = function(row, col) {
+		board.rows[row][col] = 0;
+		board.cols[col][row] = 0;
+		blocks[blockCoordinate(row)][blockCoordinate(col)][blockCellLocation(row, col)] = 0;
+	}
+
+	this.checkInput = function(inputElement) {
+		var row = inputElement.data('row');
+		var col = inputElement.data('col');
+		var value = parseInt(inputElement.value);
+
+		var unionArray = union_arrays(board.rows[row], board.cols[col]);
+		unionArray = union_arrays(unionArray, board.blocks[blockCoordinate(row)][blockCoordinate(col)]);
+		if (!($.isNumeric(value)) || $.inArray(value, unionArray)) {
+			board.yell(inputElement);
+		} else {
+			board.insertDigit(value);
+		}
 	};
 
-};
-
-function Row() {
-	var row = this;
-	Group.call(this);
-}
-
-function Column() {
-	var column = this;
-	Group.call(this);
-}
-
-function Block() {
-	var block = this;
-	Group.call(this);
-}
-
-function Board() {
-	var board = this;
-
-	this.rows = this.makeRows();
-	this.columns = this.makeColumns();
-	this.blocks = this.makeBlocks();
-	this.cells = this.makeCells();
-	this.filledCellCount = 0;
-
-	this.makeRows = function() {
-
-	};
-
-	this.makeColumns = function() {
-
-	};
-
-	this.makeBlocks = function() {
-
-	};
-
-	this.makeCells = function() {
-
-	};
-
-}
-
-function yell() {
-	alert("Hey!");
-}
-
-
-function initBoard(boardData) {
+	this.yell = function(inputElement) {
+		inputElement.addClass('invalid');
+	}
 
 }
 
@@ -101,20 +119,12 @@ function union_arrays(x, y) {
 	return res;
 }
 
-function removeFromArray(arr, item) {
-	return $.grep(arr, function(value) {
-		return value != item;
-	});
-};
-
-var BOARD = [0,8,2,4,0,5,7,0,3,0,1,0,6,8,3,5,0,0,5,3,9,7,0,0,6,4,8,0,7,4,3,5,6,1,8,9,8,0,0,9,0,7,0,0,6,9,6,3,1,2,8,4,7,0,7,4,5,0,0,9,2,3,1,0,0,8,5,3,4,0,6,0,3,0,6,2,0,1,8,5,0]
-var SOLUTION = [6,8,2,4,9,5,7,1,3,4,1,7,6,8,3,5,9,2,5,3,9,7,1,2,6,4,8,2,7,4,3,5,6,1,8,9,8,5,1,9,4,7,3,2,6,9,6,3,1,2,8,4,7,5,7,4,5,8,6,9,2,3,1,1,2,8,5,3,4,9,6,7,3,9,6,2,7,1,8,5,4]
-
-var tmpBoard = []
-for (var i = 0; i < 9; i++) {
-	tmpBoard[i] = [];
-	for (var j = 0; j < 9; j++) {
-		tmpBoard[i][j] = BOARD[9 * i + j];
-	}
+function blockCoordinate(x) {
+	return Math.floor(x/3);
+}
+function blockCellLocation(x, y) {
+	return 3 * (x % 3) + (y % 3);
 }
 
+var theBoard = new Board($('.sudoku'));
+theBoard.initBoard(BOARD);
