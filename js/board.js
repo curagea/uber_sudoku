@@ -50,7 +50,7 @@ function Board(boardContainer) {
 		for (var row = 0; row < 9; row++) {
 			for (var col = 0; col < 9; col++) {
 				var digit = boardData[9 * row + col];
-				board.cells[row][col] = new Cell(row, col, digit, board.inputs[9*row + col]);
+				board.initCell(digit, board.inputs[9 * row + col]);
 				board.rows[row][col] = digit;
 				board.cols[col][row] = digit;
 				board.blocks[blockCoordinate(row)][blockCoordinate(col)][blockCellLocation(row, col)] = digit;
@@ -63,45 +63,59 @@ function Board(boardContainer) {
 		board.inputs.on('change', function() {
 			board.checkInput($(this));
 		});
+	};
+
+	this.initCell = function(digit, inputElement) {
+		if (digit !== 0) {
+			inputElement.value = digit;
+			inputElement.disabled = true;
+		}
 	}
 
 	this.upFillCount = function() {
 		board.filledCellCount = board.filledCellCount++;
-	}
+	};
 
 	this.downFillCount = function() {
 		board.filledCellCount = board.filledCellCount--;
-	}
+	};
 
 	this.insertDigit = function(row, col, digit) {
 		board.rows[row][col] = digit;
 		board.cols[col][row] = digit;
-		blocks[blockCoordinate(row)][blockCoordinate(col)][blockCellLocation(row, col)] = digit;
-	}
+		board.blocks[blockCoordinate(row)][blockCoordinate(col)][blockCellLocation(row, col)] = digit;
+	};
 
 	this.removeDigit = function(row, col) {
 		board.rows[row][col] = 0;
 		board.cols[col][row] = 0;
 		blocks[blockCoordinate(row)][blockCoordinate(col)][blockCellLocation(row, col)] = 0;
-	}
+	};
 
 	this.checkInput = function(inputElement) {
 		var row = inputElement.data('row');
 		var col = inputElement.data('col');
-		var value = parseInt(inputElement.value);
 
-		var unionArray = union_arrays(board.rows[row], board.cols[col]);
-		unionArray = union_arrays(unionArray, board.blocks[blockCoordinate(row)][blockCoordinate(col)]);
-		if (!($.isNumeric(value)) || $.inArray(value, unionArray)) {
-			board.yell(inputElement);
+		var value = inputElement.val();
+		if (value === '') {
+			board.removeDigit(row, col);
 		} else {
-			board.insertDigit(value);
+			value = parseInt(inputElement.val());
+
+			var unionArray = union_arrays(board.rows[row], board.cols[col]);
+			unionArray = union_arrays(unionArray, board.blocks[blockCoordinate(row)][blockCoordinate(col)]);
+			if (!isValidDigit(value) || ($.inArray(value, unionArray) !== -1)) {
+				board.yell(inputElement);
+			} else {
+				board.insertDigit(row, col, value);
+				inputElement.removeClass('invalid');
+			}
 		}
 	};
 
 	this.yell = function(inputElement) {
 		inputElement.addClass('invalid');
-	}
+	};
 
 }
 
@@ -125,6 +139,11 @@ function blockCoordinate(x) {
 function blockCellLocation(x, y) {
 	return 3 * (x % 3) + (y % 3);
 }
+
+function isValidDigit(value) {
+	return $.isNumeric(value) && 0 < value && value < 10;
+}
+
 
 var theBoard = new Board($('.sudoku'));
 theBoard.initBoard(BOARD);
