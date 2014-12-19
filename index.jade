@@ -19,7 +19,7 @@ body
 								- var j = 0
 								while j < 9
 									td.cell(data-cell-row=i, data-cell-column=j)
-										input(type="number", value=isFilled ? '9' : '', min="0", max="9", disabled=isFilled)
+										input(type="number", value=isFilled ? '9' : '', min="1", max="9", disabled=isFilled)
 										- isFilled = !isFilled
 									- j++
 							- i++
