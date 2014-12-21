@@ -12,22 +12,8 @@ function Board(boardContainer) {
 
 	this.boardContainer = boardContainer;
 	this.inputs = boardContainer.find('input');
-	this.filledCellCount = 0;
-
-	this.makeStorageGrid = function(emptyArray) {
-		for (var i = 0; i < 9; i++) {
-			emptyArray[i] = [];
-		}
-	};
-
-	this.makeBlocksGrid = function(emptyArray) {
-		for (var i = 0; i < 3; i++) {
-			emptyArray[i] = [];
-			for (var j = 0; j < 3; j++) {
-				emptyArray[i][j] = [];
-			}
-		}
-	};
+	this.validCellCount = 0;
+	this.invalidCellCount = 0;
 
 	this.initBoard = function(boardData) {
 		board.grid = boardData;
@@ -55,11 +41,11 @@ function Board(boardContainer) {
 	}
 
 	this.upFillCount = function() {
-		board.filledCellCount = board.filledCellCount++;
+		board.validCellCount = board.validCellCount++;
 	};
 
 	this.downFillCount = function() {
-		board.filledCellCount = board.filledCellCount--;
+		board.validCellCount = board.validCellCount--;
 	};
 
 	this.insertDigit = function(row, col, digit) {
@@ -95,7 +81,7 @@ function Board(boardContainer) {
 			} else {
 				board.insertDigit(row, col, value);
 				inputElement.removeClass('invalid');
-				if (board.filledCellCount === 81) {
+				if (board.validCellCount === 81) {
 					board.gameFinished(SOLVED);
 				}
 			}
