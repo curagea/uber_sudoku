@@ -1,8 +1,25 @@
+/**
+ * Santa Sudoku CSS
+ */
+
+/**
+ * I don't use reset.css anymore. It's too strong of a style neutralizer, and
+ * oftentimes a few styles that it neutralizes has to be re-declared, like list
+ * styles. Normalize.css ensures a few basic styles to get things started, even if
+ * the basic styles might be overwritten later.
+ */
 @import "normalize";
 
+/**
+ * Note on HSL:
+ * I used to work exclusively with RGB, and can actually calculate from decimal
+ * to hex and back pretty easily. HSL is easier to tweak on-the-fly though; if
+ * I need to go from, say, light gray to dark gray, I just need to adjust the L
+ * value, rather than change three values in RGB. Changing hues is easier too.
+ */
 $cell-border-color: hsl(0, 0, 85%);
 $prefilled-digit-color: hsl(0, 0, 50%);
-
+$invalid-digit-color: hsl(0, 75%, 50%);
 
 body {
 	color: hsl(0, 0, 20%);
@@ -10,10 +27,14 @@ body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+/**
+ * This gets rid of the spinner arrows on number inputs. They were off-centering
+ * the text within.
+ */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 .wrapper {
@@ -30,6 +51,8 @@ input[type=number]::-webkit-outer-spin-button {
 		width: 100%;
 		position: relative;
 
+		// CSS squaring! Percentages in `padding` are based on the parent's width,
+		// not height. This pseudo-element helps make sudoku-wrap a square.
 		&:after {
 			padding-top: 100%;
 			content: '';
@@ -39,6 +62,8 @@ input[type=number]::-webkit-outer-spin-button {
 	}
 
 	.board-wrap {
+		// The positioning makes the board expand out to cover its entire parent
+		// container.
 		position: absolute;
 		left: 0;
 		right: 0;
@@ -46,11 +71,12 @@ input[type=number]::-webkit-outer-spin-button {
 		bottom: 0;
 		border: 3px solid $cell-border-color;
 		border-radius: 10px;
+		// Use `overflow: hidden` to hide corners poking outside the rounded borders.
 		overflow: hidden;
 	}
-
 }
 
+// The Sudoku board itself
 .sudoku {
 	width: 100%;
 	height: 100%;
@@ -65,6 +91,7 @@ input[type=number]::-webkit-outer-spin-button {
 			border-bottom: none;
 		}
 
+		// Add a Christmas-y checkerboard pattern to the board :)
 		&:nth-child(odd) .cell:nth-child(even),
 		&:nth-child(even) .cell:nth-child(odd) {
 			background-color: hsl(0, 100%, 95%);
@@ -105,7 +132,7 @@ input[type=number]::-webkit-outer-spin-button {
 			}
 
 			&.invalid {
-				color: hsl(0, 75%, 50%);
+				color: $invalid-digit-color;
 			}
 		}
 	}
