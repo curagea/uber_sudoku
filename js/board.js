@@ -1,12 +1,17 @@
 var BOARD = [0,8,2,4,0,5,7,0,3,0,1,0,6,8,3,5,0,0,5,3,9,7,0,0,6,4,8,0,7,4,3,5,6,0,8,9,8,0,0,9,0,7,0,0,6,9,6,3,0,0,8,4,7,0,7,4,5,0,0,0,2,3,1,0,0,8,5,3,4,0,6,0,3,0,6,2,0,1,8,5,0]
 var SOLUTION = [6,8,2,4,9,5,7,1,3,4,1,7,6,8,3,5,9,2,5,3,9,7,1,2,6,4,8,2,7,4,3,5,6,1,8,9,8,5,1,9,4,7,3,2,6,9,6,3,1,2,8,4,7,5,7,4,5,8,6,9,2,3,1,1,2,8,5,3,4,9,6,7,3,9,6,2,7,1,8,5,4]
 
-function Board(boardContainer) {
+var HAPPY = 'Merry Christmas and a Happy New Year!';
+var MAD = 'Lump of coal for you!';
+var NEUTRAL = 'Flying to the next house...';
+
+function Board(boardContainer, santa) {
 	var board = this;
 
 	this.grid = [];
 
 	this.boardContainer = boardContainer;
+	this.santa = santa;
 	this.inputs = boardContainer.find('input');
 	this.validCellCount = 0;
 
@@ -66,10 +71,10 @@ function Board(boardContainer) {
 			$.merge(unionArray, cellBlock);
 
 			if (!isValidDigit(value) || ($.inArray(value, unionArray) !== -1)) {
-				inputElement.addClass('invalid');
+				board.showBadCell(inputElement);
 			} else {
 				board.insertDigit(row, col, value);
-				inputElement.removeClass('invalid');
+				board.neutralizeCell(inputElement);
 				if (board.validCellCount === 81) {
 					board.gameFinished();
 				}
@@ -77,8 +82,18 @@ function Board(boardContainer) {
 		}
 	};
 
-	this.gameFinished = function() {
+	this.showBadCell = function(inputElement) {
+		inputElement.addClass('invalid');
+		board.changeSanta(MAD);
+	}
 
+	this.neutralizeCell = function(inputElement) {
+		inputElement.removeClass('invalid');
+		board.changeSanta(NEUTRAL);
+	}
+
+	this.gameFinished = function() {
+		board.changeSanta(HAPPY);
 	};
 
 	this.fetchRowDigits = function(row) {
@@ -113,6 +128,16 @@ function Board(boardContainer) {
 		return blockDigits;
 	};
 
+	this.changeSanta = function(state) {
+		if (state === HAPPY) {
+			board.santa.removeClass('coal').addClass('merry-christmas');
+		} else if (state === MAD) {
+			board.santa.removeClass('merry-christmas').addClass('coal');
+		} else {
+			board.santa.attr('class', 'santa');
+		}
+	}
+
 }
 
 function isValidDigit(value) {
@@ -120,5 +145,5 @@ function isValidDigit(value) {
 }
 
 
-var theBoard = new Board($('.sudoku'));
+var theBoard = new Board($('.sudoku'), $('.santa'));
 theBoard.initBoard(BOARD);
