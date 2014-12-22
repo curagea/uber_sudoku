@@ -18,7 +18,6 @@
  * value, rather than change three values in RGB. Changing hues is easier too.
  */
 $cell-border-color: hsl(0, 0, 85%);
-$prefilled-digit-color: hsl(0, 0, 50%);
 $invalid-digit-color: hsl(0, 75%, 50%);
 
 body {
@@ -125,11 +124,6 @@ input[type=number]::-webkit-outer-spin-button {
 			border: none;
 			background: none;
 			text-align: center;
-			font-size: 2.5em;
-
-			&:disabled {
-				color: $prefilled-digit-color;
-			}
 
 			&.invalid {
 				color: $invalid-digit-color;
