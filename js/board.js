@@ -92,7 +92,7 @@ function Board(boardContainer, santa) {
 			$.merge(unionArray, cellCol);
 			$.merge(unionArray, cellBlock);
 
-			if (!isValidDigit(value) || ($.inArray(value, unionArray) !== -1)) {
+			if (!board.isValidDigit(value) || ($.inArray(value, unionArray) !== -1)) {
 				board.showBadCell(inputElement);
 			} else {
 				board.insertDigit(row, col, value);
@@ -116,6 +116,11 @@ function Board(boardContainer, santa) {
 			board.validCellCount--;
 		}
 		board.grid[9 * row + col] = 0;
+	};
+
+	/** Checks if a value is a valid integer, and if it's within [1-9]. */
+	this.isValidDigit = function(value) {
+		return $.isNumeric(value) && 0 < value && value < 10;
 	};
 
 	/** Shows that the digit is invalid */
@@ -177,11 +182,6 @@ function Board(boardContainer, santa) {
 			board.santa.attr('class', 'santa');
 		}
 	}
-};
-
-/** Checks if a value is a valid integer, and if it's within [1-9]. */
-function isValidDigit(value) {
-	return $.isNumeric(value) && 0 < value && value < 10;
 };
 
 /** Load up the board data when the page is loaded */
