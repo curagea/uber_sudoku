@@ -92,12 +92,12 @@ input[type=number]::-webkit-outer-spin-button {
 		// Add a Christmas-y checkerboard pattern to the board :)
 		&:nth-child(odd) .cell:nth-child(even),
 		&:nth-child(even) .cell:nth-child(odd) {
-			background-color: hsl(0, 100%, 95%);
+			background-color: hsl(0, 100%, 90%);
 		}
 
 		&:nth-child(even) .cell:nth-child(even),
 		&:nth-child(odd) .cell:nth-child(odd) {
-			background-color: hsl(120, 100%, 95%);
+			background-color: hsl(120, 100%, 90%);
 		}
 	}
 
