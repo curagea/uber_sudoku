@@ -151,11 +151,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /**
- * Dealing with mobile
- * Media queries have their drawback, mainly that they need constant updating to
- * accommodate new devices and resolutions. Ideally, I'd use server-side detection
- * that serves up different classes for different devices, such as '.mobile',
- * '.tablet', etc.
+ * If the screen is of a certain width, the board should take up a little less
+ * space.
  */
 @media only screen and (min-width: 1024px) {
 	.outer-wrap {
