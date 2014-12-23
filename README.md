@@ -2,7 +2,8 @@ Santa Sudoku
 ===========
 Updated December 22, 2014
 
-Here's Santa Sudoku, a very simple Sudoku game with a little holiday flair.
+Here's Santa Sudoku, a very simple Sudoku game with a little holiday flair. It
+has just one board that's easy to solve.
 
 I had a blast doing this code test, and I hope you enjoy it!
 
@@ -11,13 +12,18 @@ I haven't been active in web development for several months, so I spent some tim
 re-learning a few things. There's more that I could have done, to be sure, but
 my main goal was to have a Sudoku game playable in some capacity. I also wanted
 to give the game some visual appeal too, so it wouldn't look so bland. So yes, I
-did spend some time drawing Santa.
+did spend some time drawing and animating Santa.
 
 ## Setting Up the App
 Within the app's folder, just run:
-`npm install`
-`grunt`
-... and hit the index file in your browser!
+```
+npm install
+grunt
+```
+This should generate the css/ folder holding the stylesheet, and index.html. All
+generated files are compressed.
+
+Then just hit that HTML in your browser!
 
 ## Tools Used
 This application uses the following:
@@ -34,23 +40,24 @@ I picked jQuery out of familiarity.
 Sass saved my hands from RSI.
 
 ## App Structure
-Fairly simple organization: Javascript files are in js/, Sass files are in scss/.
+Fairly simple organization. Should be self-explanatory, though on production I
+would put jQuery and third-party plugins in a separate folder within js/. Same
+goes for Sass files.
+
+The image files have also been optimized to reduce file size.
 
 ## Browsers Tested
 * Google Chrome on Mac
 * IE10
 * Mobile Safari on an iPhone 4S
 
-It *should* look fine on a Retina Mac, though since I don't have one, I can't tell.
+It *should* look fine on a Retina Mac, but since I don't have one, I can't tell.
 
 ## Decisions
 
 ### Tables versus flexbox
-I thought about using flex-box for the board markup, because semantically
-speaking, tables are for tabular data, like listing different heights at
-different times, for example. Then I realized that, essentially, the various
-digits in a Sudoku game *are* tabular data; different digits reside at different
-locations on a board. Also, flexbox wouldn't have been much simpler to deal with.
+I thought about using flex-box for the board markup, but tables are more appropriate,
+semantically speaking. Digits are data for the board, after all.
 
 At least I didn't use tables for layout :/
 
@@ -88,8 +95,6 @@ Santa's moods are each in its own sprite, as animated GIFs. With time, I could
 combine all the frames into one spritsheet and use keyframe animation. Saves
 HTTP requests and file size.
 
-Also, the Santa sprite is a little tall for mobile :/
-
 ### Different ways of entering digits
 The current implementation checks when an input loses focus and has its text
 changed. Ideally, I'd have the check on keypress instead, so it highlights
@@ -103,10 +108,7 @@ in each cell. I'd much like to try that one out.
 ### A more robust way of detecting mobile devices
 I have a CSS media query set to detect device width by pixels. It's arbitrarily
 set at 1024px because that value seems to be the absolute max for any given
-smartphone at this point. But a pixel is not a pixel is not a pixel, not with
-Retina and similar display technologies running around. I believe server-side
-detection is the more foolproof way to go regarding coding for responsive design,
-but that's a little out of my skillset to implement.
+smartphone at this point, but more should be written, like adding device-pixel-ratio.
 
 ## In Conclusion
 That should be it! The code should be self-explanatory enough along with the
