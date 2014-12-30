@@ -275,7 +275,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding-bottom: 40%;
   max-width: 600px;
   margin: 0 auto 1em;
-  background: url(/img/santa_neutral.gif) center no-repeat;
+  background: url(../img/santa_neutral.gif) center no-repeat;
   background-size: contain; }
   .santa.coal {
     background-image: url(/img/santa_bad.gif); }
